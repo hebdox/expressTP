@@ -1,0 +1,11 @@
+doctype html
+html
+  head
+    title= 'todos'
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+  - var list = todos
+    each val in list
+        h3= val.id
+        p= val.message
+        br
