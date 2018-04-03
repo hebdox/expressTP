@@ -6,11 +6,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var sqlize = require('./sqlize/sequelize');
-// var todos = require('./sqlize/todo');
-var index = require('./routes/index');
-var users = require('./routes/users');
+const Todo = require('./sqlize/todo');
+// var index = require('./routes/index');
+// var users = require('./routes/users');
+const todosRouter = require('./Models/Todos');
 
-var app = express();
+
+
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,92 +25,63 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 
 // routes
 // app.all('/', index);
-app.get('/', function (req, res) {
+app.all('/', function (req, res) {
     res.redirect('/todos')
 });
 
-app.get('/todos', async function (req, res) {
+app.use('/todos', todosRouter);
+app.use(express.static(path.join(__dirname, 'public')));
 
-    // faire les limit & ofset
-    var todo = [{id: 0, message: "toto"}, {id: 1, message: "tata"}];
-    let limit = req.query.limit;
-    let offset = req.query.offset;
+// app.get('/todo/:id', async function (req, res) {
+//
+//     var todo = [{id: 0, message: "toto"}, {id: 1, message: "tata"}];
+//
+//     console.log('todos/' + req.params.id + ' : ');
+//     sqlize.getById(req.params.id).then((datas) => {
+//
+//         console.log('datas: ' + datas);
+//         res.render('todos', {title: 'Todo list', todos: todo})
+//     });
+//
+// });
 
-    console.log('limit : ' + limit + ' offset : ' + offset);
-    limit = parseInt(limit);
-    offset = parseInt(offset);
+// app.post('/todos', async function (req, res) {
+//     console.log('Post receved ! (create) ');
+//
+//     var msg = req.body.message;
+//     if (msg === {} || msg === undefined) {
+//         console.log('use x-www-form-urlencoded to pass parameters with the keyword message and it\'s value! ;)');
+//         return;
+//     }
+//     sqlize.createNew(msg).then(function () {
+//         res.redirect('/todos');
+//     })
+// });
 
-    if (Number.isInteger(offset) && Number.isInteger(limit)) { // is not NaN
+// app.delete('/todo/:id', function (req, res) {
+//     console.log('Delete(' + req.params.id + ') receved ');
+//
+//     sqlize.deleteById(req.params.id).then(function () {
+//         res.redirect('/todos');
+//     })
+// });
 
-        sqlize.getAllDatasWithLimitAndOffset(offset, limit).then((datas) => {
-            console.log('sqlize.getalldatas() : ');
-            console.log(datas);
-        });
-
-    } else {
-
-        sqlize.getAllDatas().then((datas) => {
-            console.log('sqlize.getalldatas() : ');
-            console.log(datas);
-        });
-
-    }
-    // let todo = await  sqlize.getalldatas();
-
-    res.render('todos', {title: 'Todo list', todos: todo})
-});
-
-app.get('/todo/:id', async function (req, res) {
-
-    var todo = [{id: 0, message: "toto"}, {id: 1, message: "tata"}];
-
-    console.log('todos/' + req.params.id + ' : ');
-    sqlize.getById(req.params.id).then((datas) => {
-
-        console.log('datas: ' + datas);
-        res.render('todos', {title: 'Todo list', todos: todo})
-    });
-
-});
-
-app.post('/todos', async function (req, res) {
-    console.log('Post receved ! (create) ');
-
-    var msg = req.body.message;
-    if (msg === {} || msg === undefined) {
-        console.log('use x-www-form-urlencoded to pass parameters with the keyword message and it\'s value! ;)');
-        return;
-    }
-    sqlize.createNew(msg).then(function () {
-        res.redirect('/todos');
-    })
-});
-
-app.delete('/todo/:id', function (req, res) {
-    console.log('Delete(' + req.params.id + ') receved ');
-
-    sqlize.deleteById(req.params.id).then(function () {
-        res.redirect('/todos');
-    })
-});
-
-app.patch('/todo/:id', function (req, res) {
-    console.log('Patch(' + req.params.id + ') receved (modif)');
-
-    var msg = req.body.message;
-    if (msg === {} || msg === undefined) {
-        console.log('use x-www-form-urlencoded to pass parameters with the keyword message and it\'s value! ;)');
-        return;
-    }
-    sqlize.updateById(req.params.id, msg).then(function () {
-        res.redirect('/todos');
-    })
-});
+// app.patch('/todo/:id', function (req, res) {
+//     console.log('Patch(' + req.params.id + ') receved (modif)');
+//
+//     var msg = req.body.message;
+//     if (msg === {} || msg === undefined) {
+//         console.log('use x-www-form-urlencoded to pass parameters with the keyword message and it\'s value! ;)');
+//         return;
+//     }
+//     sqlize.updateById(req.params.id, msg).then(function () {
+//         res.redirect('/todos');
+//     })
+// });
 
 
 
