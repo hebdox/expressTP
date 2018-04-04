@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const sequelize = require('./sequelize')
+const sequelize = require('./Sequelize')
 
 const Users = sequelize.define('users', {
     id: {
@@ -10,7 +10,10 @@ const Users = sequelize.define('users', {
     login: {
         type: Sequelize.STRING
     },
-    Password: {
+    password: {
+        type: Sequelize.STRING
+    },
+    pseudo: {
         type: Sequelize.STRING
     }
 //    createdat / updatedat sont crée de base dans la bdd

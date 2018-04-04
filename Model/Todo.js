@@ -19,7 +19,7 @@
 // };
 
 const Sequelize = require('sequelize');
-const sequelize = require('./sequelize')
+const sequelize = require('./Sequelize')
 
 const Todo = sequelize.define('todos', {
     id: {
@@ -29,6 +29,10 @@ const Todo = sequelize.define('todos', {
     },
     message: {
         type: Sequelize.STRING
+    },
+    Completion: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
     }
 //    createdat / updatedat sont crée de base dans la bdd
 });

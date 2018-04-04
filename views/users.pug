@@ -1,0 +1,12 @@
+doctype html
+html
+    head
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+    - var list = usr
+    each val in list
+        h1= val.pseudo
+        h2 login = #{val.login}
+        h3 password = #{val.password}
+        br
+

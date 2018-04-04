@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Todo = require('../sqlize/todo')
+const Todo = require('../Model/Todo')
 
 router.get('/', async function (req, res) {
     let limit = +req.query.limit;

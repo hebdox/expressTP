@@ -5,11 +5,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var sqlize = require('./sqlize/sequelize');
-const Todo = require('./sqlize/todo');
+var sqlize = require('./Model/Sequelize');
+const Todo = require('./Model/Todo');
 // var index = require('./routes/index');
 // var users = require('./routes/users');
-const todosRouter = require('./Models/Todos');
+const todosRouter = require('./Routes/todos');
+const usersRouter = require('./Routes/users');
 
 
 
@@ -34,6 +35,7 @@ app.all('/', function (req, res) {
 });
 
 app.use('/todos', todosRouter);
+app.use('/users', usersRouter);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // app.get('/todo/:id', async function (req, res) {
