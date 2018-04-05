@@ -5,8 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var sqlize = require('./Model/Sequelize');
-const Todo = require('./Model/Todo');
+// var sqlize = require('./Model/Sequelize');
 // var index = require('./routes/index');
 // var users = require('./routes/users');
 const todosRouter = require('./Routes/todos');

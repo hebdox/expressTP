@@ -16,7 +16,7 @@ router.get('/add', async function (req, res) {
     res.render('create')
 });
 
-router.get('/:id', async function (req, res) {
+router.get('/id/:id', async function (req, res) {
 
     const usr = await Users.findById(req.params.id);
     console.log(usr);
@@ -27,32 +27,41 @@ router.get('/login', async function (req, res) {
     res.render('login')
 });
 
-router.post('/', async function (req, res) {
+router.post('/add', async function (req, res) {
 
-    let msg = req.body.login;
-    console.log(msg);
-    if (msg === {} || msg === undefined) {
+    let login = req.body.login;
+    console.log(login);
+    if (login === undefined) {
         console.log('use x-www-form-urlencoded to pass parameters with the keyword message and it\'s value! ;)');
         return;
     }
     bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-        Users.create({login: req.body.login, password: hash, pseudo: req.body.pseudo});
+        Users.create({login: req.body.login, password: hash, pseudo: req.body.pseudo})
+            .then(function () {
+                res.redirect('/users');
+            })
     });
 
 
-    res.redirect('/users');
+
 });
 
 router.post('/login', async function (req, res) {
 
     let login = req.body.login;
-    let pass = req.body.login;
+    let pass = req.body.password;
 
-    let bddusr = Users.findAll({where: {login: login}});
 
-    bcrypt.compare(pass, bddusr.password, function(err, res) {
-        if (res == true) {
-            res.send('<h1>'+bddusr.pseudo+'</h1>')
+
+    let bddusr = await Users.findAll({where: {login: login}});
+    console.log(bddusr);
+    // console.log(pass);
+    // console.log(bddusr[0].dataValues.password);
+
+    bcrypt.compare(pass, bddusr[0].dataValues.password, function(err, resu) {
+        console.log(resu);
+        if (resu === true) {
+            res.send('<h1>'+bddusr[0].dataValues.pseudo+'</h1>')
         }else {
 
             res.send('<h1> No user found </h1>')
